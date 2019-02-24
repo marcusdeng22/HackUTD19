@@ -27,6 +27,9 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import android.view.MenuItem;
 import android.view.Menu;
@@ -68,6 +71,19 @@ public class MainActivity extends AppCompatActivity {
                 textView.setVisibility(View.INVISIBLE);
             }
         }
+
+        // populate listview
+        StableArrayAdapter row;
+
+        List<String> name = Arrays.asList("Table 1", "Table 2", "Table 3", "Table 4", "Table 5", "Table 1", "Table 2", "Table 3", "Table 4", "Table 5", "Table 1", "Table 2", "Table 3", "Table 4", "Table 5");
+        List<String> availability = Arrays.asList("Available", "Available", "Unvailable", "Unavailable", "Available", "Available", "Available", "Unvailable", "Unavailable", "Available", "Available", "Available", "Unvailable", "Unavailable", "Available");
+        List<String> location = Arrays.asList("ECSW Floor 1", "ECSW Floor 2", "ECSW Floor  3", "ECSW Floor  4", "ECSW Floor  5", "ECSW Floor 1", "ECSW Floor 2", "ECSW Floor  3", "ECSW Floor  4", "ECSW Floor  5", "ECSW Floor 1", "ECSW Floor 2", "ECSW Floor  3", "ECSW Floor  4", "ECSW Floor  5");
+        List<String> details = Arrays.asList("High Chair", "No outlet", "Noisy", "Natural Light", "Standing Desk", "High Chair", "No outlet", "Noisy", "Natural Light", "Standing Desk", "High Chair", "No outlet", "Noisy", "Natural Light", "Standing Desk");
+
+        // create StableArrayAdapter and populate ListView with stock data
+        // create StableArrayAdapter and populate ListView with stock data
+        row = new StableArrayAdapter(getApplicationContext(), name, availability, location, details);
+        ((ListView)findViewById(R.id.rooms_list)).setAdapter(row);
 
 
         //Snackbar.make(findViewById(R.id.main_coordinating_layout), barcode.displayValue, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
