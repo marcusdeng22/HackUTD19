@@ -11,10 +11,13 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.vision.CameraSource;
@@ -43,15 +46,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(MainActivity.this, CameraActivity.class);
-                MainActivity.this.startActivity(myIntent);
+                startActivity(myIntent);
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 //        .setAction("Action", null).show();
             }
         });
 
 
+        Intent intent = getIntent();
+        if (intent != null)
+        {
+            String message = intent.getStringExtra("barcode");
+            TextView textView = findViewById(R.id.textView);
+            textView.setText(message);
+        }
 
+        //Snackbar.make(findViewById(R.id.main_coordinating_layout), barcode.displayValue, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -78,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
     public void refresh(MenuItem item) {
     }
 
-    public void openCam(View view) {
 
     }
 }

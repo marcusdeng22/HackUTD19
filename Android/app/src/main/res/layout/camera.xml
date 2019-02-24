@@ -12,7 +12,7 @@
     <SurfaceView
         android:id="@+id/camera_preview"
         android:layout_width="300sp"
-        android:layout_height="300sp"
+        android:layout_height="400sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

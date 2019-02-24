@@ -1,7 +1,9 @@
 package com.victormao.hackutd19;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.SurfaceView;
 
 import android.Manifest;
@@ -39,9 +41,24 @@ public class CameraActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.camera);
 
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.CAMERA}, 200);
+        }
+
+        Intent intent = getIntent();
+
          surfaceView = findViewById(R.id.camera_preview);
+         surfaceView.setZOrderMediaOverlay(true);
          barcodeDetector = new BarcodeDetector.Builder(this).setBarcodeFormats(Barcode.QR_CODE).build();
-         cameraSource = new CameraSource.Builder(this, barcodeDetector).setRequestedPreviewSize(640, 480).build();
+        if(!barcodeDetector.isOperational()){
+            Toast.makeText(getApplicationContext(), "Sorry, Couldn't setup the detector", Toast.LENGTH_LONG).show();
+            this.finish();
+        }
+         cameraSource = new CameraSource.Builder(this, barcodeDetector)
+                 .setFacing(CameraSource.CAMERA_FACING_BACK)
+                 .setRequestedFps(24)
+                 .setAutoFocusEnabled(true)
+                 .setRequestedPreviewSize(1920,1024).build();
 
          surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
         @Override
@@ -63,7 +80,6 @@ public class CameraActivity extends AppCompatActivity {
 
         @Override
         public void surfaceDestroyed(SurfaceHolder holder) {
-        cameraSource.stop();
         }
         });
 
@@ -81,8 +97,20 @@ public class CameraActivity extends AppCompatActivity {
                 Vibrator vibrator = (Vibrator)getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                 vibrator.vibrate(1000);
                 Snackbar.make(findViewById(R.id.camera_layout), qrCode.valueAt(0).displayValue, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+
+
+                returnReply(qrCode.valueAt(0).displayValue);
+                cameraSource.stop();
             }
         }
         });
+    }
+
+    public void returnReply(String reply) {
+        Log.e("entered", "entered returnreply");
+        //String reply = mReply.getText().toString();
+        Intent intent = new Intent(CameraActivity.this, MainActivity.class);
+        intent.putExtra("barcode", reply);
+        startActivity(intent);
     }
 }
