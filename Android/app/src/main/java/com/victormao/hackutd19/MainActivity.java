@@ -16,6 +16,7 @@ import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewStructure;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +33,7 @@ import android.view.Menu;
 
 public class MainActivity extends AppCompatActivity {
 
-
+    TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +53,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        textView = findViewById(R.id.textView);
 
         Intent intent = getIntent();
         if (intent != null)
         {
             String message = intent.getStringExtra("barcode");
-            TextView textView = findViewById(R.id.textView);
-            textView.setText(message);
+            if (message != null)
+            {
+                textView.setText("Successfully checked in at " + message);
+                textView.setVisibility(View.VISIBLE);
+            }
+            else {
+                textView.setVisibility(View.INVISIBLE);
+            }
         }
+
 
         //Snackbar.make(findViewById(R.id.main_coordinating_layout), barcode.displayValue, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
     }

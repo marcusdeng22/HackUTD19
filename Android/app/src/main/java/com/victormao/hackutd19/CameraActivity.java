@@ -21,6 +21,7 @@ import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.vision.CameraSource;
@@ -30,11 +31,14 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
 
+import static android.os.SystemClock.sleep;
+
 public class CameraActivity extends AppCompatActivity {
 
     SurfaceView surfaceView;
     CameraSource cameraSource;
     BarcodeDetector barcodeDetector;
+    TextView response;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +48,6 @@ public class CameraActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.CAMERA}, 200);
         }
-
-        Intent intent = getIntent();
 
          surfaceView = findViewById(R.id.camera_preview);
          surfaceView.setZOrderMediaOverlay(true);
@@ -96,10 +98,9 @@ public class CameraActivity extends AppCompatActivity {
             if (qrCode.size() != 0) {
                 Vibrator vibrator = (Vibrator)getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                 vibrator.vibrate(1000);
-                Snackbar.make(findViewById(R.id.camera_layout), qrCode.valueAt(0).displayValue, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
 
-
-                returnReply(qrCode.valueAt(0).displayValue);
+                String location = qrCode.valueAt(0).displayValue;
+                returnReply(location);
                 cameraSource.stop();
             }
         }
@@ -107,7 +108,9 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     public void returnReply(String reply) {
-        Log.e("entered", "entered returnreply");
+        sleep(1500);
+
+        Log.e("entered", "entered return reply");
         //String reply = mReply.getText().toString();
         Intent intent = new Intent(CameraActivity.this, MainActivity.class);
         intent.putExtra("barcode", reply);
