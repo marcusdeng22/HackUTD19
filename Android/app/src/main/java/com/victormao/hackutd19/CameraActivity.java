@@ -75,13 +75,13 @@ public class CameraActivity extends AppCompatActivity {
 
         @Override
         public void receiveDetections(Detector.Detections<Barcode> detections) {
-        SparseArray<Barcode> qrCode = detections.getDetectedItems();
+            SparseArray<Barcode> qrCode = detections.getDetectedItems();
 
-        if (qrCode.size() != 0) {
-        Vibrator vibrator = (Vibrator)getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-        vibrator.vibrate(1000);
-        Toast.makeText(getApplicationContext(), qrCode.valueAt(0).displayValue, Toast.LENGTH_LONG).show();
-        }
+            if (qrCode.size() != 0) {
+                Vibrator vibrator = (Vibrator)getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+                vibrator.vibrate(1000);
+                Snackbar.make(findViewById(R.id.camera_layout), qrCode.valueAt(0).displayValue, Snackbar.LENGTH_SHORT).setAction("Action", null).show();
+            }
         }
         });
     }
